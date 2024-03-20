@@ -8,7 +8,7 @@ const Receipt = ({navigation}) => {
     <View style={styles.container}>
       <View style={[styles.topBar, styles.iconContainer]}>
         <Ionicons
-          name="arrow-back"
+          name="arrow-back"yellow
           size={24}
           color="black"
           style={{ marginTop: 10 }}

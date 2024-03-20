@@ -10,8 +10,8 @@ const Preference = ({navigation}) => {
           source={require("../../../../assets/imageApp/user2.png")}
           style={{ width: 120, height: 120, borderRadius: 60 }}
         />
-        <Text style={{ fontSize: 20 }}>John Doe</Text>
-        <Text style={{ fontSize: 16 }}>johndoe@example.com</Text>
+        <Text style={{ fontSize: 20 }}>Adel1234</Text>
+        <Text style={{ fontSize: 16 }}>bedranimohammed12@gmail.com</Text>
       </View>
       <View style={styles.section2}>
         <CardPreference />
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 50,
-    backgroundColor: "yellow",
+    backgroundColor: "orange",
     justifyContent: "center",
     alignItems: "center",
   },

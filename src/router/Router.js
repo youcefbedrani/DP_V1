@@ -24,6 +24,13 @@ import OnTrip from "../screens/client/trcuk/OnTrip";
 import Arrived from "../screens/client/trcuk/Arrived";
 import Feedback from "../screens/client/trip/Feedback";
 import Receipt from "../screens/client/trip/Receipt";
+import HomeTrucker from "../screens/trucker/HomeTrucker";
+import Trucker_info from "../screens/trucker/Trucker_Info/Trucker_info";
+import Set_Info from "../screens/trucker/set-info/Set_Info";
+import Tow_Infos from "../screens/trucker/Tow_infos/Tow_Infos";
+import Trucker_vision from "../screens/trucker/Trucker_vision/Trucker_vision";
+import Requsete_course from "../components/trucker/Requsete_course";
+import Truck_Req from "../screens/trucker/Truck_Req/Truck_Req";
 const Router = () => {
   const Stack = createStackNavigator();
   return (
@@ -31,7 +38,7 @@ const Router = () => {
       <Stack.Navigator
         screenOptions={{
           gestureEnabled: true,
-          ...TransitionPresets.SlideFromRightIOS, // Apply slide transition
+          ...TransitionPresets.SlideFromRightIOS,
           statusBar: false,
         }}
         initialRouteName="Welcome"
@@ -88,7 +95,7 @@ const Router = () => {
           component={Truck_Search}
           options={{ headerShown: false }}
         />
-         <Stack.Screen
+        <Stack.Screen
           name="SearchingDriver"
           component={SearchingDriver}
           options={{ headerShown: false }}
@@ -103,24 +110,59 @@ const Router = () => {
           component={RideReady}
           options={{ headerShown: false }}
         />
-         <Stack.Screen
+        <Stack.Screen
           name="OnTrip"
           component={OnTrip}
           options={{ headerShown: false }}
         />
-         <Stack.Screen
+        <Stack.Screen
           name="Arrived"
           component={Arrived}
           options={{ headerShown: false }}
         />
-         <Stack.Screen
+        <Stack.Screen
           name="Receipt"
           component={Receipt}
           options={{ headerShown: false }}
         />
-         <Stack.Screen
+        <Stack.Screen
           name="Feedback"
           component={Feedback}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="HomeTrucker"
+          component={HomeTrucker}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Trucker_info"
+          component={Trucker_info}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Set_Info"
+          component={Set_Info}
+          options={{ headerShown: false }}
+        />
+         <Stack.Screen
+          name="Tow_Infos"
+          component={Tow_Infos}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Trucker_vision"
+          component={Trucker_vision}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Requsete_course"
+          component={Requsete_course}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Truck_Req"
+          component={Truck_Req}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

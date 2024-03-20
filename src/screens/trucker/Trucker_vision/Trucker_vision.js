@@ -1,12 +1,12 @@
 import { View, Text, ScrollView, StyleSheet } from "react-native";
 import React, { useContext } from "react";
 import { StatusBar } from "expo-status-bar";
-import HeaderTap from "../../components/HeaderTab"
-import WelcomeMessage from "../../components/WelcomeMessage";
-import Services from "../../components/Services";
-import Ads_Card from "../../components/Ads_Card";
-import Menu from "../../components/Menu";
-const HomeClient = ({ navigation }) => {
+import HeaderTap from "../../../components/HeaderTab"
+import WelcomeMessage from "../../../components/WelcomeMessage";
+import Services from "../../../components/trucker/Services";
+import Ads_Card from "../../../components/Ads_Card";
+import Menu from "../../../components/Menu";
+const Trucker_vision = ({ navigation }) => {
   return (
     <Menu navigation={navigation}>
 
@@ -24,8 +24,8 @@ const HomeClient = ({ navigation }) => {
           className="flex-column h-40 justify-between"
         >
           <Ads_Card
-            icon={require("../../../assets/imageApp/car-service.png")}
-            imgUrl={require("../../../assets/imageApp/ads1.png")}
+            icon={require("../../../../assets/imageApp/car-service.png")}
+            imgUrl={require("../../../../assets/imageApp/ads1.png")}
             title="Thanks to you"
             subTitle="We thank you for your trust"
             short_descrption="Depenage Dz has been voted product of the year 2024"
@@ -36,8 +36,8 @@ const HomeClient = ({ navigation }) => {
           className="flex-column w-full h-40 justify-between"
         >
           <Ads_Card
-            icon={require("../../../assets/imageApp/car-service.png")}
-            imgUrl={require("../../../assets/imageApp/ads1.png")}
+            icon={require("../../../../assets/imageApp/car-service.png")}
+            imgUrl={require("../../../../assets/imageApp/ads1.png")}
             title="Thanks to you"
             subTitle="We thank you for your trust"
             short_descrption="Depenage Dz has been voted product of the year 2024"
@@ -48,8 +48,8 @@ const HomeClient = ({ navigation }) => {
           className="flex-column w-full h-40 justify-between"
         >
           <Ads_Card
-            icon={require("../../../assets/imageApp/car-service.png")}
-            imgUrl={require("../../../assets/imageApp/ads1.png")}
+            icon={require("../../../../assets/imageApp/car-service.png")}
+            imgUrl={require("../../../../assets/imageApp/ads1.png")}
             title="Thanks to you"
             subTitle="We thank you for your trust"
             short_descrption="Depenage Dz has been voted product of the year 2024"
@@ -71,4 +71,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeClient;
+export default Trucker_vision

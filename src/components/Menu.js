@@ -27,10 +27,6 @@ const Menu = ({ children ,navigation }) => {
       drawerLockMode={isMenuOpen ? "unlocked" : "locked-closed"}
       drawerGestureEnabled={false}
       drawerOpen={isMenuOpen}
-      // onDrawerClose={() => setIsMenuOpen(false)}
-      // onDrawerOpen={() => setIsMenuOpen(true)}
-      // onDrawerClose={() => {}}
-      // onDrawerOpen={() =>{} }
       renderNavigationView={() => (
         <View style={styles.container}>
           <View style={styles.section1}>
@@ -38,8 +34,8 @@ const Menu = ({ children ,navigation }) => {
               source={require("../../assets/imageApp/car.png")}
               style={styles.profilePicture}
             />
-            <Text style={styles.username}>Username</Text>
-            <Text style={styles.email}>username@example.com</Text>
+            <Text style={styles.username}>Adel1234</Text>
+            <Text style={styles.email}>bedranimohammed12@gmail.com</Text>
           </View>
           <View style={styles.section2}>
             <TouchableOpacity
@@ -48,7 +44,6 @@ const Menu = ({ children ,navigation }) => {
                 setIsMenuOpen(false);
                 navigation.navigate("RideHistory");
               }}
-              
           >
               <Text style={styles.buttonText}>Ride history</Text>
             </TouchableOpacity>

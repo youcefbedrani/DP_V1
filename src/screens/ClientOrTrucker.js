@@ -36,7 +36,7 @@ const ClientOrTrucker = ({ navigation }) => {
               Client
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.shadow , {width : "43%"}]} className="h-20 bg-white rounded-md items-center justify-center" onPress={()=>navigation.navigate("Home_L_D")}>
+          <TouchableOpacity style={[styles.shadow , {width : "43%"}]} className="h-20 bg-white rounded-md items-center justify-center" onPress={()=>navigation.navigate("HomeTrucker")}>
             <AntDesign name="car" size={24} color="#FF621F" />
             <Text style={{ color: "#FF621F" }} className="font-bold text-lg">
               Trucker

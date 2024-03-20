@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginTop: 20,
     marginHorizontal: 10,
-    backgroundColor: "yellow",
+    backgroundColor: "orange",
   },
   date: {
     fontSize: 18,
