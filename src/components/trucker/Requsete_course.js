@@ -39,9 +39,9 @@ const Requsete_course = () => {
         }).start(() => {
           console.log("Accepted");
           setSwipe(true);
-          setInterval(()=> {
+          setTimeout(() => {
             navigation.navigate("Truck_Req");
-          }, 5000)
+          }, 5000);
         });
       } else if(event.nativeEvent.translationX < SWIPE_CANCELING) {
         Animated.timing(translateX, {
@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
   },
   box: {
     width: 250,
-    height: 50,
+    height: 150,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 8,

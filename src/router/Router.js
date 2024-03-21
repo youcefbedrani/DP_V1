@@ -31,6 +31,7 @@ import Tow_Infos from "../screens/trucker/Tow_infos/Tow_Infos";
 import Trucker_vision from "../screens/trucker/Trucker_vision/Trucker_vision";
 import Requsete_course from "../components/trucker/Requsete_course";
 import Truck_Req from "../screens/trucker/Truck_Req/Truck_Req";
+import Start_Truck from "../screens/trucker/Start_truck/Start_Truck";
 const Router = () => {
   const Stack = createStackNavigator();
   return (
@@ -163,6 +164,11 @@ const Router = () => {
         <Stack.Screen
           name="Truck_Req"
           component={Truck_Req}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Start_Truck"
+          component={Start_Truck}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

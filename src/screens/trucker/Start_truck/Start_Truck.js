@@ -21,17 +21,21 @@ import {
   MaterialIcons,
   Feather,
   FontAwesome5,
+  FontAwesome6,
   FontAwesome,
   AntDesign,
 } from "@expo/vector-icons";
 
-const Truck_Req = () => {
-  const StartPoint = useMemo(() => ["42%"], []);
+const Start_Truck = () => {
+  const StartPoint = useMemo(() => ["54%"], []);
   const navigation = useNavigation();
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [Latitude, setLatitude] = useState(null);
   const [Longitude, setLongitude] = useState(null);
+  const [getToLocation, setGetToLocation] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const [Time , setTime] = useState(0);
 
   useEffect(() => {
     (async () => {
@@ -65,8 +69,9 @@ const Truck_Req = () => {
   } else if (location) {
     text = `Latitude: ${Latitude}, Longitude: ${Longitude}`;
   }
-
-
+  const toggleVisibility = () => {
+    setIsVisible(!isVisible);
+  };
   return (
     <View style={styles.container}>
       <MapView style={{ flex: 1 }} initialRegion={initialRegion}>
@@ -111,15 +116,49 @@ const Truck_Req = () => {
               </View>
             </View>
             <View>
-              <Text className="text-blue-400">2.67KM</Text>
+              <Text className="text-blue-400">0.00KM</Text>
             </View>
           </View>
           {/* show on map */}
-          <View style={{ marginLeft: -130 }}>
+          <View style={{ marginLeft: -230 }}>
             <TouchableOpacity className="flex-row space-x-3 mt-2 items-center">
-              <FontAwesome name="map-pin" size={24} color="orange" />
-              <Text className="font-bold">Ben Aknoun , Alger , Alger</Text>
+              <Text className="font-bold">Location</Text>
             </TouchableOpacity>
+          </View>
+          {/* location */}
+          <View
+            style={styles.shadow}
+            className="w-80 h-26 bg-white rounded-md flex-column mx-auto mt-1 p-2 items-start justify-between"
+          >
+            <View className="flex-row items-center space-x-2">
+              <MaterialIcons
+                name="location-searching"
+                size={24}
+                color={`${!getToLocation ? "orange" : "gray"}`}
+              />
+              <Text
+                className={`font-bold  ${
+                  !getToLocation ? "text-orange-400" : "text-gray-400"
+                }`}
+              >
+                Ben Aknoun , Alger , Alger
+              </Text>
+            </View>
+            <View style={styles.liness} className="mb-1"></View>
+            <View className="flex-row items-center space-x-2">
+              <FontAwesome6
+                name="location-crosshairs"
+                size={24}
+                color={`${!getToLocation ? "black" : "orange"}`}
+              />
+              <Text
+                className={`font-bold  ${
+                  !getToLocation ? "" : "text-orange-400"
+                }`}
+              >
+                Bab zouar , Alger , Alger
+              </Text>
+            </View>
           </View>
           {/* Options for Trucker */}
           <View className="flex-row mx-auto items-center space-x-2 my-4">
@@ -138,16 +177,33 @@ const Truck_Req = () => {
               <Text className="font-bold text-white">Call</Text>
             </TouchableOpacity>
           </View>
-          {/* Repport Your  Clinet */}
+          {/* Start Truck */}
           <View className="w-full mx-14 items-center">
-            <TouchableOpacity
-              className="w-full h-12 rounded-xl bg-black py-2 px-4"
-              onPress={() => navigation.navigate("Start_Truck")}
-            >
-              <Text className="text-center font-bold text-white text-lg">
-                Repport Your Clinet
-              </Text>
-            </TouchableOpacity>
+            {isVisible ? (
+              <TouchableOpacity
+                className="w-full h-12 rounded-xl bg-orange-400 py-2 px-4"
+                onPress={() => {
+                  // navigation.navigate("SearchingDriver");
+                  setGetToLocation(true);
+                  toggleVisibility();
+                }}
+              >
+                <Text className="text-center font-bold text-white text-lg">
+                  Start Your Truck
+                </Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                className="w-full h-12 rounded-xl bg-orange-400 py-2 px-4"
+                onPress={() => {
+                  // navigation.navigate("SearchingDriver");
+                }}
+              >
+                <Text className="text-center font-bold text-white text-lg">
+                  Arrive distination
+                </Text>
+              </TouchableOpacity>
+            )}
           </View>
         </BottomSheetView>
       </BottomSheet>
@@ -180,6 +236,13 @@ const styles = StyleSheet.create({
     borderBottomColor: "gray",
     borderBottomWidth: 1,
   },
+  liness: {
+    width: 10,
+    height: 20,
+    marginLeft: 10,
+    borderLeftColor: "gray",
+    borderLeftWidth: 1,
+  },
 });
 
-export default Truck_Req;
+export default Start_Truck;
