@@ -10,7 +10,7 @@ import {
 
 export const MenuContext = createContext();
 
-const Menu = ({ children ,navigation }) => {
+const Menu = ({ children, navigation, role }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const sidebar = useRef();
 
@@ -34,35 +34,81 @@ const Menu = ({ children ,navigation }) => {
               source={require("../../assets/imageApp/car.png")}
               style={styles.profilePicture}
             />
-            <Text style={styles.username}>Adel1234</Text>
-            <Text style={styles.email}>bedranimohammed12@gmail.com</Text>
+            <Text style={styles.username}>Tahar99</Text>
+            <Text style={styles.email}>taharhadji99@gmail.com</Text>
           </View>
           <View style={styles.section2}>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => {
-                setIsMenuOpen(false);
-                navigation.navigate("RideHistory");
-              }}
-          >
-              <Text style={styles.buttonText}>Ride history</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button}>
-              <Text style={styles.buttonText}>Account information</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button}
-             onPress={() => navigation.navigate("Preference")}
-            >
-              <Text style={styles.buttonText}>Preferences</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button}>
-              <Text style={styles.buttonText}>Support</Text>
-            </TouchableOpacity>
-            <View style={styles.loginButton}>
-              <TouchableOpacity style={styles.loginButtonText}>
-                <Text style={styles.loginButtonText}>LOG IN</Text>
-              </TouchableOpacity>
-            </View>
+            {role == "client" ? (
+              <View>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={() => {
+                    setIsMenuOpen(false);
+                    navigation.navigate("RideHistory");
+                  }}
+                >
+                  <Text style={styles.buttonText}>Ride history</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button}>
+                  <Text style={styles.buttonText}>Account information</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={() => navigation.navigate("Preference")}
+                >
+                  <Text style={styles.buttonText}>Preferences</Text>
+                </TouchableOpacity>
+                <TouchableOpacity 
+                style={styles.button}
+                onPress={() => navigation.navigate("Support")}
+
+                >
+                  <Text style={styles.buttonText}>Support</Text>
+                </TouchableOpacity>
+                <View style={styles.loginButton}>
+                  <TouchableOpacity style={styles.loginButtonText}>
+                    <Text style={styles.loginButtonText}>LOG IN</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            ) : (
+              <View>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={() => {
+                    // setIsMenuOpen(false);
+                    navigation.navigate("History");
+                  }}
+                >
+                  <Text style={styles.buttonText}>my courses</Text>
+                </TouchableOpacity>
+
+               
+                
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={() => navigation.navigate("Income")}
+                >
+                  <Text style={styles.buttonText}>my income</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.button}>
+                  <Text style={styles.buttonText}>Profile</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity 
+                style={styles.button}
+                onPress={() => navigation.navigate("Support")}
+                >
+                  <Text style={styles.buttonText}>Support</Text>
+                </TouchableOpacity>
+                <View style={styles.loginButton}>
+                  <TouchableOpacity style={styles.loginButtonText}>
+                    <Text style={styles.loginButtonText}>LOG OUT</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            )}
           </View>
         </View>
       )}

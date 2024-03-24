@@ -8,7 +8,7 @@ import Ads_Card from "../../components/Ads_Card";
 import Menu from "../../components/Menu";
 const HomeClient = ({ navigation }) => {
   return (
-    <Menu navigation={navigation}>
+    <Menu navigation={navigation} role="client">
 
     <View className="flex-1 bg-white items-center px-4">
       <HeaderTap/>

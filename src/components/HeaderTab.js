@@ -4,6 +4,7 @@ import { MenuContext } from "./Menu";
 const HeaderTap = () => {
   const [isSetPhoto, setIsSetPhoto] = useState(true);
   const toggleMenu = useContext(MenuContext);
+
   return (
     <View>
       <View

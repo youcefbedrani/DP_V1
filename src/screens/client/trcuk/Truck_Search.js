@@ -88,7 +88,7 @@ const Truck_Search = () => {
               <MaterialIcons name="my-location" size={24} color="orange" />
               <TextInput
                 placeholder="My Location"
-                value="Laghouat , Laghouat , Laghouat Algeria"
+                value="Msila , Magra , Ouled Mansor"
               />
             </View>
             <View className=" w-80 mx-auto h-10 flex-row items-center space-x-3">
