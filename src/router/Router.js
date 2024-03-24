@@ -32,6 +32,13 @@ import Trucker_vision from "../screens/trucker/Trucker_vision/Trucker_vision";
 import Requsete_course from "../components/trucker/Requsete_course";
 import Truck_Req from "../screens/trucker/Truck_Req/Truck_Req";
 import Start_Truck from "../screens/trucker/Start_truck/Start_Truck";
+import ReceiptTrucker from "../screens/trucker/cach_in/ReceiptTrucker";
+import FeedbackTrucker from "../screens/trucker/feedback/FeedbackTrucker";
+import History from "../screens/trucker/History/History";
+import Income from "../screens/trucker/cach_in/Income";
+import Support from "../screens/trucker/support/Support";
+import MonthlyTotal from "../screens/trucker/cach_in/MonthlyTotal";
+
 const Router = () => {
   const Stack = createStackNavigator();
   return (
@@ -171,6 +178,38 @@ const Router = () => {
           component={Start_Truck}
           options={{ headerShown: false }}
         />
+         <Stack.Screen
+          name="ReceiptTrucker"
+          component={ReceiptTrucker}
+          options={{ headerShown: false }}
+        />
+        
+        <Stack.Screen
+          name="FeedbackTrucker"
+          component={FeedbackTrucker}
+          options={{ headerShown: false }}
+        />
+        
+        <Stack.Screen
+          name="History"
+          component={History}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Income"
+          component={Income}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Support"
+          component={Support}
+          options={{ headerShown: false }}
+        /> 
+         <Stack.Screen
+          name="MonthlyTotal"
+          component={MonthlyTotal}
+          options={{ headerShown: false }}
+        /> 
       </Stack.Navigator>
     </NavigationContainer>
   );

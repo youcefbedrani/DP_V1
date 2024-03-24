@@ -8,9 +8,9 @@ const CardFeedback = ({navigation}) => {
       <View style={styles.userContainer}>
         <Image
           style={styles.userImage}
-          source={require('../../assets/imageApp/user.jpg')}
+          source={require('../../../assets/imageApp/user.jpg')}
         />
-        <Text style={styles.userName}>Adel Bedrani</Text>
+        <Text style={styles.userName}>Adel Bedra..</Text>
       </View>
       
       <View style={styles.ratingContainer}>
@@ -34,7 +34,7 @@ const CardFeedback = ({navigation}) => {
       
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.okButton}
-         onPress={()=>{navigation.navigate("HomeClient")}}
+         onPress={()=>{navigation.navigate("Trucker_vision")}}
         >
           <Text style={styles.okButtonText}>Rate</Text>
         </TouchableOpacity>

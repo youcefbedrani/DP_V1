@@ -196,7 +196,7 @@ const Start_Truck = () => {
               <TouchableOpacity
                 className="w-full h-12 rounded-xl bg-orange-400 py-2 px-4"
                 onPress={() => {
-                  // navigation.navigate("SearchingDriver");
+                  navigation.navigate("ReceiptTrucker");
                 }}
               >
                 <Text className="text-center font-bold text-white text-lg">

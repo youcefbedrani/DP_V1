@@ -7,7 +7,7 @@ const WelcomeMessage = () => {
       <View>
         <View className="flex-row space-x-3">
           <Text className="text-4xl text-orange-900 font-bold">
-            Wellcome Adel
+            Wellcome Tahar
           </Text>
           <Image
             className="w-10 h-10"
