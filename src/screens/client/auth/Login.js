@@ -92,7 +92,7 @@ const Login = ({ navigation }) => {
       {/* Not registre yet */}
       <View className="mx-14 mt-4 flex-row space-x-2">
         <Text className="text-gray-400">Not Registered yet?</Text>
-        <TouchableOpacity onPress={() => navigation.navigate("Home_S")}>
+        <TouchableOpacity onPress={() => navigation.navigate("SignUpClient")}>
           <Text
             className="text-orange-500"
           >

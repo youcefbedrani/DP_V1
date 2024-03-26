@@ -38,6 +38,7 @@ import History from "../screens/trucker/History/History";
 import Income from "../screens/trucker/cach_in/Income";
 import Support from "../screens/trucker/support/Support";
 import MonthlyTotal from "../screens/trucker/cach_in/MonthlyTotal";
+import SignUpClient from "../screens/client/auth/SignUpClient";
 
 const Router = () => {
   const Stack = createStackNavigator();
@@ -68,7 +69,11 @@ const Router = () => {
           component={LoginClient}
           options={{ headerShown: false }}
         />
-
+        <Stack.Screen
+          name="SignUpClient"
+          component={SignUpClient}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
           name="HomeClient"
           component={HomeClient}
@@ -153,7 +158,7 @@ const Router = () => {
           component={Set_Info}
           options={{ headerShown: false }}
         />
-         <Stack.Screen
+        <Stack.Screen
           name="Tow_Infos"
           component={Tow_Infos}
           options={{ headerShown: false }}
@@ -178,18 +183,18 @@ const Router = () => {
           component={Start_Truck}
           options={{ headerShown: false }}
         />
-         <Stack.Screen
+        <Stack.Screen
           name="ReceiptTrucker"
           component={ReceiptTrucker}
           options={{ headerShown: false }}
         />
-        
+
         <Stack.Screen
           name="FeedbackTrucker"
           component={FeedbackTrucker}
           options={{ headerShown: false }}
         />
-        
+
         <Stack.Screen
           name="History"
           component={History}
@@ -204,12 +209,12 @@ const Router = () => {
           name="Support"
           component={Support}
           options={{ headerShown: false }}
-        /> 
-         <Stack.Screen
+        />
+        <Stack.Screen
           name="MonthlyTotal"
           component={MonthlyTotal}
           options={{ headerShown: false }}
-        /> 
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
