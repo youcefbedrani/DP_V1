@@ -1,8 +1,23 @@
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FontAwesome } from "@expo/vector-icons";
-const Services = ({ navigation }) => {
-  const [online, setOnline] = useState(true);
+import TruckerServices from "../../Shared/TruckerServices";
+import { useNavigation } from "@react-navigation/native";
+
+const Services = () => {
+  const navigation = useNavigation();
+
+  const [online, setOnline] = useState(false);
+  const [porfit, setProfit] = useState("");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await TruckerServices.getTruckerInfo();
+      setProfit(response.NetProfit);
+      setOnline(response.Online);
+    };
+    fetchData();
+  }, []);
 
   const makeOffLine = () => {
     setOnline(false);
@@ -14,12 +29,20 @@ const Services = ({ navigation }) => {
     <View>
       <View style={styles.shadow} className="bg-white rounded-lg p-2">
         <Text className="text-black text-xl font-bold">Net Profit :</Text>
-        <Text className="text-black font-bold text-2xl">0 DA</Text>
+        {porfit ? (
+          <Text className="text-black font-bold text-2xl">{porfit} DA</Text>
+        ) : null}
       </View>
       <View className="flex-row my-4 mr-10">
-        <Text className="text-lg text-orange-900 font-bold">
-          You are out of the servise :
-        </Text>
+        {online ? (
+          <Text className="text-lg text-orange-900 font-bold">
+            You are in the servise :
+          </Text>
+        ) : (
+          <Text className="text-lg text-orange-900 font-bold">
+            You are out of the servise :
+          </Text>
+        )}
       </View>
       <View style={{ width: "100%" }} className="flex-row space-x-3">
         <TouchableOpacity

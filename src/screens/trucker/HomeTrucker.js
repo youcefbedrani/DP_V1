@@ -10,8 +10,16 @@ import {
 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import Job_options from "./Job_options/Job_options";
+import TruckerServices from "../../Shared/TruckerServices";
+
 const HomeTrucker = () => {
   const navigation = useNavigation();
+
+  const handleLogout = () => {
+    TruckerServices.Logout();
+    navigation.navigate("ClientOrTrucker");
+  };
+
   return (
     <View className="pt-8 flex-column">
       {/* Tab bar */}
@@ -23,7 +31,10 @@ const HomeTrucker = () => {
           />
         </View>
         <View>
-          <TouchableOpacity className="flex-row items-center space-x-2">
+          <TouchableOpacity
+            onPress={handleLogout}
+            className="flex-row items-center space-x-2"
+          >
             <Text>Log out</Text>
             <Feather name="log-out" size={24} color="black" />
           </TouchableOpacity>

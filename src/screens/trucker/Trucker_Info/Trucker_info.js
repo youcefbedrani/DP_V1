@@ -1,5 +1,5 @@
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   AntDesign,
   Fontisto,
@@ -8,8 +8,45 @@ import {
   FontAwesome,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import TruckerServices from "../../../Shared/TruckerServices";
 
 const Trucker_info = () => {
+  const navigation = useNavigation();
+  const [makebool, setMakeBool] = useState({ info: false });
+
+  const [show, setShow] = useState(false);
+  const [driverLicense, setDriverLicense] = useState(false);
+  const [basicInfo, setBasicinfo] = useState(false);
+
+  useEffect(() => {
+    handleinfo();
+    if (driverLicense && basicInfo) {
+      setMakeBool({ ...makebool, info: true });
+      setShow(true);
+    } else {
+      setShow(false);
+    }
+  }, [driverLicense, basicInfo]);
+
+  const handleinfo = async () => {
+    const Basic = await TruckerServices.getBasicInfo();
+    const License = await TruckerServices.getDrtiverLicenseInfo();
+    setBasicinfo(Basic.info);
+    setDriverLicense(License.info);
+  };
+
+  const handleLogout = () => {
+    TruckerServices.Logout();
+    navigation.navigate("ClientOrTrucker");
+  };
+
+  const handlePress = () => {
+    if (basicInfo && driverLicense) {
+      TruckerServices.setTruckerInfo(makebool);
+    }
+    navigation.navigate("Tow_Infos");
+  };
   return (
     <View className="pt-12">
       <View className="pl-4 flex-row items-center justify-between pr-4">
@@ -20,25 +57,40 @@ const Trucker_info = () => {
           />
         </View>
         <View>
-          <TouchableOpacity className="flex-row items-center space-x-2">
+          <TouchableOpacity
+            onPress={handleLogout}
+            className="flex-row items-center space-x-2"
+          >
             <Text>Log out</Text>
             <Feather name="log-out" size={24} color="black" />
           </TouchableOpacity>
         </View>
       </View>
       <TouchableOpacity
+        onPress={() => navigation.navigate("BasicInfo")}
+        disabled={basicInfo}
         style={styles.shadow}
         className="flex-row pt-6 shadow-lg pl-6 pr-4 w-80 h-16 mt-8 bg-white mx-auto justify-between rounded-lg mb-4"
       >
         <Text className="font-bold"> Basic Info</Text>
-        <AntDesign name="right" size={24} color="orange" />
+        {basicInfo ? (
+          <FontAwesome name="check-circle" size={24} color="green" />
+        ) : (
+          <AntDesign name="right" size={24} color="orange" />
+        )}
       </TouchableOpacity>
       <TouchableOpacity
+        onPress={() => navigation.navigate("DriverLicense")}
+        disabled={driverLicense}
         style={styles.shadow}
         className="flex-row pt-6 shadow-lg pl-6 pr-4 w-80 h-16 bg-white mx-auto justify-between rounded-lg mb-4"
       >
         <Text className="font-bold"> Driver License Info</Text>
-        <AntDesign name="right" size={24} color="orange" />
+        {driverLicense ? (
+          <FontAwesome name="check-circle" size={24} color="green" />
+        ) : (
+          <AntDesign name="right" size={24} color="orange" />
+        )}
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.shadow}
@@ -56,17 +108,21 @@ const Trucker_info = () => {
         <Text className="text-gray-400">(Optional)</Text>
         <AntDesign name="right" size={24} color="orange" />
       </TouchableOpacity>
-      <View
-        style={[styles.shadow, { opacity: 0.5 }]}
-        className="w-80 h-14 bg-gray-100 rounded-lg mx-auto items-center justify-center"
-      >
-        <Text className="text-center font-bold text-xl">Done</Text>
-      </View>
+      {show ? (
+        <View className="mx-2 my-4 rounded-xl">
+          <TouchableOpacity
+            onPress={handlePress}
+            style={{ height: 45 }}
+            className="bg-orange-500 pt-2 rounded-xl"
+          >
+            <Text className="mx-auto text-white text-lg">Done</Text>
+          </TouchableOpacity>
+        </View>
+      ) : null}
       <Text className="text-sm text-gray-600 mx-auto mt-4 px-4">
-        By tapping Done I Agree with Terms and
-        Conditions , I acknowledge and  agree with
-        passing and transfer of personal data according
-        to conditions of Privacy Policy
+        By tapping Done I Agree with Terms and Conditions , I acknowledge and
+        agree with passing and transfer of personal data according to conditions
+        of Privacy Policy
       </Text>
     </View>
   );

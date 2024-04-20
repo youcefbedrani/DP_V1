@@ -1,7 +1,8 @@
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import React from "react";
-
-const Services = ({navigation}) => {
+import { useNavigation } from '@react-navigation/native';
+const Services = () => {
+  const navigation =  useNavigation();
   return (
     <View>
       <View className="flex-row my-4 mr-10">

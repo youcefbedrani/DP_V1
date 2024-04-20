@@ -1,9 +1,23 @@
 import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
-import React, { useContext, useState } from "react";
+import React, { useEffect , useContext, useState } from "react";
 import { MenuContext } from "./Menu";
-const HeaderTap = () => {
+import Servicess from "../Shared/Servicess";
+const HeaderTap = ({ appinfo }) => {
+  const [city, setCity] = useState(null);
+  const [country, setCountry] = useState("");
   const [isSetPhoto, setIsSetPhoto] = useState(true);
   const toggleMenu = useContext(MenuContext);
+
+  useEffect(() => {
+    try {
+      Servicess.getApp().then((res) => {
+        setCity(res["city"]);
+        setCountry(res["country"]);
+      });
+    } catch (e) {
+      setErrorMsg("Error fetching location");
+    }
+  }, []);
 
   return (
     <View>
@@ -12,7 +26,10 @@ const HeaderTap = () => {
         className="bg-orange-50 mt-12 justify-between rounded-lg px-4 flex-row"
       >
         <View className="justify-center mr-1">
-          <TouchableOpacity className="items-center justify-center" onPress={toggleMenu}>
+          <TouchableOpacity
+            className="items-center justify-center"
+            onPress={toggleMenu}
+          >
             <View
               // style={styles.shadow}
               className="items-center justify-center w-10 h-10 bg-white rounded-lg"
@@ -24,11 +41,14 @@ const HeaderTap = () => {
             </View>
           </TouchableOpacity>
         </View>
-        <View className="justify-center">
+        <View className="justify-center mr-14">
           <Text className="text-orange-900 text-lg font-bold">Location</Text>
-          <Text className="text-sm text-gray-500">
-            Laghouat , Laghouat  Algeria
-          </Text>
+          {/* our location from home context */}
+          {city && country ? (
+            <Text className="text-sm text-gray-500">
+              {city} , {country}
+            </Text>
+          ) : null}
         </View>
         {/* Default case in Registre */}
         <View className="justify-center">
