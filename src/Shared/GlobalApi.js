@@ -1,7 +1,7 @@
 import { create } from "apisauce";
 //192.168.77.12 192.168.81.12
 const api = create({
-  baseURL: "http://192.168.51.12:1337",
+  baseURL: "http://192.168.42.12:1337",
   headers: {
     "X-API-Key":
       "249c85bba47fef83ec7b16c4e38c47ff77e909dfda455ab07a47e5a177bdf29ba82c4c182fc32fa9a66047b7ca5946dbe895d6c4c908f7d66059aa6efa4bacb0381b78be61e94f91e40935ac8905809313fd61ada314319a10addde2432d9f78e04b7feb8de1b49b254e0e4dc7cd1db34f4c0a2b1ff32fab86cd4d02a4bdfdb8",
@@ -58,6 +58,7 @@ const getProvedTrucker = async () => {
     throw error;
   }
 };
+
 export default {
   getUserInfoData,
   setUser,

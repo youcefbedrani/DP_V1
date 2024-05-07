@@ -34,7 +34,7 @@ import MapComponentHTML from "../../../components/Template/map-template";
 import { axios } from "axios";
 
 const Truck_Search = () => {
-  const StartPoint = useMemo(() => ["18%" , "40%"], []);
+  const StartPoint = useMemo(() => ["18%", "40%"], []);
   const navigation = useNavigation();
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
@@ -48,6 +48,10 @@ const Truck_Search = () => {
   let [mapCenter, setMapCenter] = useState("-121.913, 37.361");
   const [destination, setDestination] = useState("");
   const [manageHistory, setManageHistory] = useState([]);
+  const [duarations, setDurations] = useState([]);
+  const [distanses, setDistances] = useState([]);
+  const [name, setName] = useState("");
+  const [distinationUser, setDistinationUser] = useState([]);
 
   const ApiDataLocation = {
     Latitude: Latitude,
@@ -55,7 +59,7 @@ const Truck_Search = () => {
   };
 
   const jsCode = `handleDestinationPosition(${parseFloat(
-    Longitude
+    Longitude,
   )}, ${parseFloat(Latitude)})`;
 
   // var jsCode2;
@@ -67,13 +71,59 @@ const Truck_Search = () => {
     }
   `;
   };
-  console.log(manageHistory);
+  // console.log(manageHistory);
+
+  const handleTripInfo = () => {
+    // Send data to localStorage
+    TripInfo();
+  };
+
+  const TripInfo = async () => {
+    const username = await Servicess.getMenu().then((res) => {
+      return res.firstName + " " + res.lastName;
+    });
+
+    const expo_push_token = await Servicess.getMenu().then((res) => {
+      return res.expo_push_token;
+    });
+
+    const TripData = {
+      username: username,
+      duration: duarations[duarations.length - 1], // corrected spelling
+      distance: distanses[distanses.length - 1], // corrected spelling
+      place: name,
+      location: distinationUser,
+      expo_push_token: expo_push_token.token,
+    };
+
+    console.log(TripInfo);
+
+    await Servicess.setTripInfo(TripData).then((res) => {
+      navigation.navigate("SearchingDriver");
+    });
+  };
 
   const handleMapEvent = (data) => {
-    const {duration, distance, data: searchLocation } = JSON.parse(data.nativeEvent.data);
+    const {
+      duration,
+      distance,
+      name: searchLocation,
+      Location,
+    } = JSON.parse(data.nativeEvent.data);
     setDestination(searchLocation);
-    setManageHistory([...manageHistory, searchLocation]);
-    console.log(distance + ' km  |  ' + duration + " min ");
+    setManageHistory((prevHistory) => [
+      ...prevHistory,
+      searchLocation.split(",").slice(0, 3).join(","),
+    ]);
+    setDurations([...duarations, duration]);
+    setDistances([...distanses, distance]);
+    setDistinationUser(Location);
+    setName(searchLocation.split(",").slice(0, 1)[0]);
+    console.log(
+      distance + " km  |  " + duration + " min ",
+      searchLocation.split(",").slice(0, 1)[0],
+      Location,
+    );
   };
 
   useEffect(() => {
@@ -102,7 +152,6 @@ const Truck_Search = () => {
   } else if (Latitude && Longitude) {
     text = `Latitude: ${Latitude}, Longitude: ${Longitude}`;
   }
-
   return (
     <View style={styles.container}>
       {/* Here we  add our tom tom api from web  view */}
@@ -149,17 +198,6 @@ const Truck_Search = () => {
               </ScrollView>
             </View>
           </View>
-          {/* show on map */}
-          <View style={{ marginLeft: -180 }}>
-            <TouchableOpacity
-              onPress={onButtonPress}
-              className="flex-row space-x-3 mt-4 items-center"
-            >
-              <FontAwesome name="map-pin" size={24} color="orange" />
-              <Text>Show on Map</Text>
-            </TouchableOpacity>
-          </View>
-          {/* History Location  */}
           <Text
             style={{ marginLeft: -180 }}
             className="text-gray-500 mt-6 mb-2 text-lg"
@@ -189,7 +227,7 @@ const Truck_Search = () => {
           <View className="w-full mx-14 items-center">
             <TouchableOpacity
               className="w-full h-12 rounded-xl bg-orange-800 py-2 px-4"
-              onPress={() => navigation.navigate("SearchingDriver")}
+              onPress={handleTripInfo}
             >
               <Text className="text-center font-bold text-white text-lg">
                 Done

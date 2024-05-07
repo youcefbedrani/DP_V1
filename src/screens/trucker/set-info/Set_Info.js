@@ -1,5 +1,6 @@
 import {
   View,
+  Platform,
   Text,
   TouchableOpacity,
   StyleSheet,
@@ -21,6 +22,37 @@ import TruckerDBServices from "../../../Shared/TruckerDBServices.js";
 import { Truck } from "react-native-feather";
 import GlobalApi from "../../../Shared/GlobalApi.js";
 import * as FileSystem from "expo-file-system";
+import * as Notifications from "expo-notifications";
+import Constants from "expo-constants";
+
+export async function registerForPushNotificationsAsync() {
+  let token;
+
+  if (Platform.OS === "android") {
+    await Notifications.setNotificationChannelAsync("default", {
+      name: "default",
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: "#FF231F7C",
+    });
+  }
+
+  const { status: existingStatus } = await Notifications.getPermissionsAsync();
+  let finalStatus = existingStatus;
+  if (existingStatus !== "granted") {
+    const { status } = await Notifications.requestPermissionsAsync();
+    finalStatus = status;
+  }
+  if (finalStatus !== "granted") {
+    alert("Failed to get push token for push notification!");
+    return;
+  }
+
+  token = (await Notifications.getExpoPushTokenAsync()).data;
+  console.log(token);
+
+  return token;
+}
 
 const Set_Info = () => {
   const navigation = useNavigation();
@@ -30,6 +62,7 @@ const Set_Info = () => {
   const [truckerInfo, setTruckerInfo] = useState(false);
   const [vehicleInfo, setVehicleInfo] = useState(false);
   const [files, setFiles] = useState("");
+  const [expoPushToken, setExpoPushToken] = useState("");
 
   useEffect(() => {
     if (truckerInfo && vehicleInfo) {
@@ -52,34 +85,42 @@ const Set_Info = () => {
         setTruckerInfo(Trucker.info);
         setVehicleInfo(Tow.info);
 
-        //set To files state
-        //setFiles(TruckerDriverLicenseInfo["backImagePhoto"]);
-        //
+        const getToken = async () => {
+          const token = await registerForPushNotificationsAsync();
+          // Now you can use the token for whatever purpose you need
+          const truckerInfoSent = {
+            firstname: TruckerBasicInfo["firstname"],
+            lastname: TruckerBasicInfo["lastname"],
+            birthdate: TruckerBasicInfo["birthDay"],
+            email: TruckerBasicInfo["email"],
+            password: TruckerBasicInfo["password"],
+            number: TruckerBasicInfo["phoneNumber"],
+            DriveLicenceDataExpiration: TruckerDriverLicenseInfo["date"],
+            License_Number: TruckerDriverLicenseInfo["licenseNumber"],
+            Certificate_Number: TruckerTowInfo["numberCirtificate"],
+            Tow_Transport: TruckerTowInfo["transport"],
+            Number_Plate: TruckerTowInfo["numberPlate"],
+            expo_push_token: { token: token },
+          };
 
-        const truckerInfoSent = {
-          firstname: TruckerBasicInfo["firstname"],
-          lastname: TruckerBasicInfo["lastname"],
-          birthdate: TruckerBasicInfo["birthDay"],
-          email: TruckerBasicInfo["email"],
-          password: TruckerBasicInfo["password"],
-          number: TruckerBasicInfo["phoneNumber"],
-          DriveLicenceDataExpiration: TruckerDriverLicenseInfo["date"],
-          License_Number: TruckerDriverLicenseInfo["licenseNumber"],
-          Certificate_Number: TruckerTowInfo["numberCirtificate"],
-          Tow_Transport: TruckerTowInfo["transport"],
-          Number_Plate: TruckerTowInfo["numberPlate"],
+          await GlobalApi.setTruckerInfo(truckerInfoSent)
+            .then(() => {
+              console.log("seccuess");
+            })
+            .catch((e) => {
+              console.log(e);
+            });
         };
+
+        getToken();
+
+        console.log(truckerToken);
+
         console.log(truckerInfoSent);
         const req = await GlobalApi.getTruckerInfoData();
         console.log(req.data);
 
         //upload files to strapi
-        await GlobalApi.setTruckerInfo(truckerInfoSent).then(() => {
-          console.log("seccuess");
-        });
-        //  .catch((e) => {
-        //    console.log(e);
-        //  });
       } catch (e) {
         console.error("Error fetching data:", error);
         Alert.alert("Error", "Failed to fetch data");
@@ -92,6 +133,11 @@ const Set_Info = () => {
     TruckerServices.Logout();
     navigation.navigate("ClientOrTrucker");
   };
+
+  const handlSubmit = () => {
+    navigation.navigate("WaitResponse");
+  };
+
   return (
     <View>
       <View className="pl-4 mt-8 flex-row items-center justify-between pr-4">
@@ -143,7 +189,7 @@ const Set_Info = () => {
         {show ? (
           <View className="mx-2 my-4 rounded-xl">
             <TouchableOpacity
-              onPress={() => navigation.navigate("WaitResponse")}
+              onPress={handlSubmit}
               style={{ height: 45 }}
               className="bg-orange-500 pt-2 rounded-xl"
             >

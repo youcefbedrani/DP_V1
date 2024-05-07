@@ -90,7 +90,16 @@ const handleDestinationPosition = (Longitude, Latitude) => {
 
         map.fitBounds(e.geocode.bbox);
 
-        data["data"] = e.geocode.name;
+        data["name"] = e.geocode.name;
+
+        var destinationLatitude = latlan.lat;
+        var destinationLongitude = latlan.lng;
+
+        data["Location"] = {
+            destinationLatitude : destinationLatitude,
+            destinationLongitude : destinationLongitude
+        };
+
 
         // manageHistory(data);
 

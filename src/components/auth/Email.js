@@ -1,4 +1,5 @@
 import {
+  Platform,
   View,
   Text,
   TouchableOpacity,
@@ -29,6 +30,7 @@ const Email = () => {
   const navigation = useNavigation();
   const { userData, setUserData } = useContext(AuthContext) || {};
   const { userInfo, setUserInfo } = useContext(InfoContext) || {};
+  const [userToken, setUserToken] = useState("");
 
   const data = {
     email: email,
@@ -50,7 +52,8 @@ const Email = () => {
           firstName: item.attributes.firstname,
           lastName: item.attributes.lastname,
           number: item.attributes.number,
-        }
+          expo_push_token: item.attributes.expo_push_token,
+        };
         Servicess.setUserInfo(UserInformation);
         Servicess.setMenu(menu);
         console.log(menu);
@@ -74,6 +77,7 @@ const Email = () => {
             firstName: item.attributes.firstname,
             lastName: item.attributes.lastname,
             number: item.attributes.number,
+            expo_push_token: item.attributes.expo_push_token,
           };
           Servicess.setUserInfo(UserInformation);
           Servicess.setMenu(menu);
@@ -105,7 +109,7 @@ const Email = () => {
       const response = await createUserWithEmailAndPassword(
         auth,
         email,
-        password
+        password,
       );
       alert("Check Your Email");
     } catch (error) {
@@ -115,6 +119,15 @@ const Email = () => {
       setLoading(false);
     }
   };
+
+  // useEffect(() => {
+  //   const getToken = async () => {
+  //     const token = await registerForPushNotificationsAsync();
+  //     // Now you can use the token for whatever purpose you need
+  //   };
+  //   getToken();
+  // }, []);
+
   return (
     <View>
       <KeyboardAvoidingView behavior="padding">

@@ -16,29 +16,32 @@ const HeaderTap = ({ appinfo }) => {
   const toggleMenu = useContext(MenuContext);
 
   useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        setErrorMsg("Permission to access location was denied");
-        return;
-      }
-
-      let location = await Location.getCurrentPositionAsync({});
-      setLocation(location);
-    })();
-    const fetchcodoniate = async (location) => {
+    const getLocationAndAddress = async () => {
       try {
+        let { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== "granted") {
+          throw new Error("Permission to access location was denied");
+        }
+
+        let location = await Location.getCurrentPositionAsync({});
         const response = await axios.get(
           `http://api.openweathermap.org/geo/1.0/reverse?lat=${location.coords.latitude}&lon=${location.coords.longitude}&appid=03394454ec0881efd19fd262c64a69cc`
         );
-        const data = response.data;
-        setAddress(`${response.data[0].name}, ${response.data[0].state}`);
+
+        if (response.data && response.data.length > 0) {
+          const address = `${response.data[0].name}, ${response.data[0].state}`;
+          setAddress(address);
+        } else {
+          throw new Error("Invalid response from OpenWeatherMap API");
+        }
       } catch (error) {
         console.error("Error fetching location:", error);
+        Alert.alert("Error", "Failed to fetch location. Please try again later.");
         setAddress("Error fetching location");
       }
     };
-    fetchcodoniate(location);
+
+    getLocationAndAddress();
   }, []);
 
   useEffect(() => {

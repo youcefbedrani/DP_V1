@@ -49,6 +49,21 @@ const getApp = async () => {
   return JSON.parse(value);
 };
 
+
+
+//----------------------------------------------------------------
+
+const setTripInfo = async (value) => {
+  await AsyncStorage.setItem("trpinfo ", JSON.stringify(value));
+};
+
+const getTripInfo  = async () => {
+  const value = await AsyncStorage.getItem("trpinfo ");
+  return JSON.parse(value);
+};
+
+
+
 export default {
   setUserAuth,
   getUserAuth,
@@ -59,4 +74,6 @@ export default {
   getApp,
   setApp,
   Logout,
+  setTripInfo,
+  getTripInfo,
 };

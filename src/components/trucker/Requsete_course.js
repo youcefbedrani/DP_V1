@@ -16,11 +16,23 @@ const { width } = Dimensions.get("window");
 const SWIPE_THRESHOLD = 100;
 const SWIPE_CANCELING = -100;
 
-
-const Requsete_course = () => {
+const Requsete_course = ({ data }) => {
   const navigation = useNavigation();
   const [swipe, setSwipe] = useState(false);
   const translateX = useRef(new Animated.Value(0)).current;
+
+  const {
+    username,
+    userToken,
+    currentLocation,
+    destinationLocation,
+    totalDistance,
+    cost,
+  } = data.params;
+
+  console.log(currentLocation);
+  console.log(destinationLocation);
+  console.log(totalDistance);
 
   const onGestureEvent = Animated.event(
     [{ nativeEvent: { translationX: translateX } }],
@@ -37,13 +49,25 @@ const Requsete_course = () => {
           duration: 200,
           useNativeDriver: true,
         }).start(() => {
-          console.log("Accepted");
+          // console.log("Accepted");
           setSwipe(true);
+          try {
+            // we need to store the accept
+          } catch (e) {
+            console.error(e);
+          }
           setTimeout(() => {
-            navigation.navigate("Truck_Req");
-          }, 5000);
+            navigation.navigate("Truck_Req", {
+              username: username,
+              userToken: userToken,
+              currentLocation: currentLocation,
+              destinationLocation: destinationLocation,
+              totalDistance: totalDistance,
+              cost: cost,
+            });
+          }, 3000);
         });
-      } else if(event.nativeEvent.translationX < SWIPE_CANCELING) {
+      } else if (event.nativeEvent.translationX < SWIPE_CANCELING) {
         Animated.timing(translateX, {
           toValue: -width,
           duration: 200,
@@ -76,8 +100,8 @@ const Requsete_course = () => {
           className="w-20 h-20 rounded-2xl"
         />
         <View className="flex-column items-center">
-          <Text className="font-bold text-gray-700">Hadji Mohammed Tahir</Text>
-          <Text className="font-bold text-2xl">730 DZ</Text>
+          <Text className="font-bold text-gray-700">{username}</Text>
+          <Text className="font-bold text-2xl">{cost} DZ</Text>
         </View>
       </View>
       <View
@@ -122,7 +146,11 @@ const Requsete_course = () => {
                 size={28}
                 color={swipe ? "green" : "orange"}
               />
-              <Animatable.View animation="fadeIn" duration={1000} ref={(ref) => (this.textRef = ref)}>
+              <Animatable.View
+                animation="fadeIn"
+                duration={1000}
+                ref={(ref) => (this.textRef = ref)}
+              >
                 <Text className="text-center font-bold text-lg text-gray-600">
                   Swipe
                 </Text>

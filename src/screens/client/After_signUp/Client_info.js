@@ -1,4 +1,11 @@
-import { Image, View, Text, TextInput, TouchableOpacity } from "react-native";
+import {
+  Platform,
+  Image,
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+} from "react-native";
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigation } from "@react-navigation/native";
 import Servicess from "../../../Shared/Servicess";
@@ -6,6 +13,37 @@ import GlobalApi from "../../../Shared/GlobalApi";
 import { AuthContext } from "../../../Context/client/AuthContext";
 import { InfoContext } from "../../../Context/client/InfoContext";
 import { MenuBarContext } from "../../../Context/client/MenuBarContext";
+import * as Notifications from "expo-notifications";
+import Constants from "expo-constants";
+
+export async function registerForPushNotificationsAsync() {
+  let token;
+
+  if (Platform.OS === "android") {
+    await Notifications.setNotificationChannelAsync("default", {
+      name: "default",
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: "#FF231F7C",
+    });
+  }
+
+  const { status: existingStatus } = await Notifications.getPermissionsAsync();
+  let finalStatus = existingStatus;
+  if (existingStatus !== "granted") {
+    const { status } = await Notifications.requestPermissionsAsync();
+    finalStatus = status;
+  }
+  if (finalStatus !== "granted") {
+    alert("Failed to get push token for push notification!");
+    return;
+  }
+
+  token = (await Notifications.getExpoPushTokenAsync()).data;
+  console.log(token);
+
+  return token;
+}
 
 const client_info = () => {
   const [show, setShow] = useState(false);
@@ -35,6 +73,16 @@ const client_info = () => {
     }
   };
 
+  //Here  we create user token and set it to dataabse and then in other hand we get it
+
+  Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: false,
+      shouldSetBadge: false,
+    }),
+  });
+
   useEffect(() => {
     handleShow();
   }, [firstName, lastName, Email]);
@@ -46,15 +94,23 @@ const client_info = () => {
   };
   const setData = async () => {
     try {
-      const user = {
-        firstname: firstName,
-        lastname: lastName,
-        number: number,
-        email: Email,
-        password: Password,
+      const getToken = async () => {
+        const token = await registerForPushNotificationsAsync();
+        // Now you can use the token for whatever purpose you need
+        console.log(token);
+
+        const user = {
+          firstname: firstName,
+          lastname: lastName,
+          number: number,
+          email: Email,
+          password: Password,
+          expo_push_token: { token: token },
+        };
+        await GlobalApi.setUser(user);
       };
-      // console.log(user);
-      await GlobalApi.setUser(user);
+
+      getToken();
     } catch (error) {
       console.error("Error setting user data:", error);
     }

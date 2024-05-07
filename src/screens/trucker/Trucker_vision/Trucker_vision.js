@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, StyleSheet } from "react-native";
+import { Platform, View, Text, ScrollView, StyleSheet } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import HeaderTap from "../../../components/trucker/HeaderTab";
@@ -8,10 +8,51 @@ import Ads_Card from "../../../components/Ads_Card";
 import Menu from "../../../components/Menu";
 import { useNavigation } from "@react-navigation/native";
 import TruckerServices from "../../../Shared/TruckerServices";
+import * as Notifications from "expo-notifications";
+import Constants from "expo-constants";
+
+export async function registerForPushNotificationsAsync() {
+  let token;
+
+  if (Platform.OS === "android") {
+    await Notifications.setNotificationChannelAsync("default", {
+      name: "default",
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: "#FF231F7C",
+    });
+  }
+
+  const { status: existingStatus } = await Notifications.getPermissionsAsync();
+  let finalStatus = existingStatus;
+  if (existingStatus !== "granted") {
+    const { status } = await Notifications.requestPermissionsAsync();
+    finalStatus = status;
+  }
+  if (finalStatus !== "granted") {
+    alert("Failed to get push token for push notification!");
+    return;
+  }
+
+  token = (await Notifications.getExpoPushTokenAsync()).data;
+  console.log(token);
+
+  return token;
+}
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+  }),
+});
 
 const Trucker_vision = () => {
   const navigation = useNavigation();
   const [userName, setUserName] = useState("");
+  const [expoPushToken, setExpoPushToken] = useState("");
+
   useEffect(() => {
     const fetchData = async () => {
       const response = await TruckerServices.getBasicInfo();
@@ -20,6 +61,53 @@ const Trucker_vision = () => {
     };
     fetchData();
   }, []);
+
+  useEffect(() => {
+    registerForPushNotificationsAsync().then((token) =>
+      setExpoPushToken(token)
+    );
+
+    console.log(expoPushToken);
+  }, []);
+
+  useEffect(() => {
+    const subscription = Notifications.addNotificationReceivedListener(
+      (notification) => {
+        const { data } = notification.request.content;
+
+        console.log(`Data received with notification: ${JSON.stringify(data)}`);
+
+        if (data.notificationType === "ride_request") {
+          const {
+            username,
+            userToken,
+            currentLocation,
+            destinationLocation,
+            totalDistance,
+            cost,
+          } = data;
+
+          navigation.navigate("Requsete_course", {
+            username: username,
+            userToken: userToken,
+            currentLocation: currentLocation,
+            destinationLocation: destinationLocation,
+            totalDistance: totalDistance,
+            cost: cost,
+          });
+        } else {
+          console.log(
+            "Notification type is not 'ride_request'. Ignoring the notification."
+          );
+        }
+      }
+    );
+
+    return () => {
+      subscription.remove();
+    };
+  }, []);
+
   return (
     <Menu navigation={navigation} role="trucker">
       <View className="flex-1 bg-white items-center px-4">
